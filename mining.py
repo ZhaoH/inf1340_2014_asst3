@@ -19,6 +19,12 @@ monthly_averages = []
 
 
 def read_stock_data(stock_name, stock_file_name):
+    """
+    Read stock data and calculate stock monthly average price
+    :param stock_name: The name of stock
+    :param stock_file_name: The name of a JSON formatted file that contains stock data
+    :return: Tuple. Consist of the average for that month, and the date (month and year)
+    """
     return
 
 
