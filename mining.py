@@ -10,21 +10,11 @@ __license__ = "MIT License"
 
 __status__ = "Prototype"
 
-
-"""
-    1. Read json file
-    2. Required fields: date, volume, close price
-    3. How many data points are there in the JSON file for that month (import datetime - Sasa used it)
-    4. Calculate monthly average
-    5. In tuple - put calculated monthly average with the month and year
-    6. Append tuple to a list - monthly_averages_list
-"""
-
 # imports one per line
 import json
+import datetime
 
-
-REQUIRED_FIELDS = ["Date", "Close", "Volume"]
+#import json
 
 stock_data = []
 monthly_averages = []
@@ -37,22 +27,50 @@ def read_stock_data(stock_name, stock_file_name):
     :param stock_file_name: The name of a JSON formatted file that contains stock data
     :return: Tuple. Consist of the average for that month, and the date (month and year)
     """
+    global monthly_averages, stock_data
+    year = None
+    month = None
+    volume = 0
+    close_volume = 0
 
-    with open(stock_file_name) as file_handle:
-        file_contents = file_handle.read()
-        json.loads(file_contents)
+    stock_data = read_json_from_file(stock_file_name)
 
-
-    for record in file_contents:
-        year = record["Date"][0:4]
-        month = record["Date"][5:2]
-        close = record["Close"]
-        volume = record["Volume"]
-
-
-        t = ([year, month, close, volume])
-
+    for entry in stock_data:
+        try:
+            entry["Date"] = datetime.datetime.strptime(entry["Date"], '%Y-%m-%d')
+            #   print(entry["Date"].month)
+            if year is None:
+                year = entry["Date"].year
+                month = entry["Date"].month
+            elif entry["Date"].month == month:
+                volume += entry["Volume"]
+                close_volume += entry["Close"] * entry["Volume"]
+            elif entry["Date"].month != month:
+                monthly_averages += [{"Date": month, "monthly_average": round(close_volume/volume,2)}]
+                #print(monthly_averages)
+                month = entry["Date"].month
+                volume = entry["Volume"]
+                close_volume = entry["Close"] * entry["Volume"]
+        except ValueError:
+            return False
+    print(monthly_averages)
     return
+
+#REQUIRED_FIELDS = ["date", "close", "volume"]
+#average price = (V1  C1 + V2  C2)=(V1 + V2)
+#monthly_averages_list: tuple of averages for each month
+
+#from last assignment:
+#def valid_date_format(date_string):
+#    """
+#    Checks whether a date has the format YYYY-mm-dd in numbers
+#    :param date_string: date to be checked
+#   :return: Boolean True if the format is valid, False otherwise
+#    """
+#    try:
+#        datetime.datetime.strptime(date_string, '%Y-%m-%d')
+#        return True
+
 
 
 def six_best_months():
@@ -63,5 +81,10 @@ def six_worst_months():
     return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
 
 
+def read_json_from_file(file_name):
+    with open(file_name) as file_handle:
+        file_contents = file_handle.read()
 
+    return json.loads(file_contents)
 
+read_stock_data("GOOG", "data/GOOG.json")
