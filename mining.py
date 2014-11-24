@@ -34,12 +34,13 @@ def read_stock_data(stock_name, stock_file_name):
     close_volume = 0
 
     stock_data = read_json_from_file(stock_file_name)
-
     for entry in stock_data:
         try:
             entry["Date"] = datetime.datetime.strptime(entry["Date"], '%Y-%m-%d')
 
+            # Check if the entry is not in the same month as last entry
             if entry["Date"].month != month or entry["Date"].year != year:
+                # Check if year flag is assigned with a valid value
                 if year is not None:
                     date = str(year) + "-" + str(month)
                     monthly_averages += [{"Date": date, "monthly_average": round(close_volume/volume, 2)}]
@@ -49,13 +50,14 @@ def read_stock_data(stock_name, stock_file_name):
                 volume = entry["Volume"]
                 close_volume = entry["Close"] * entry["Volume"]
 
-            elif entry["Date"].month == month and entry["Date"].year == year:
+            else:
                 volume += entry["Volume"]
                 close_volume += entry["Close"] * entry["Volume"]
 
         except ValueError:
             return False
-    print(monthly_averages)
+
+    print(monthly_averages)  # Show test result, delete after the project is done
     return
 
 #REQUIRED_FIELDS = ["date", "close", "volume"]
@@ -72,7 +74,6 @@ def read_stock_data(stock_name, stock_file_name):
 #    try:
 #        datetime.datetime.strptime(date_string, '%Y-%m-%d')
 #        return True
-
 
 
 def six_best_months():
