@@ -22,10 +22,6 @@ __status__ = "Prototype"
 
 # imports one per line
 import json
-import datetime
-
-
-
 
 
 REQUIRED_FIELDS = ["Date", "Close", "Volume"]
@@ -50,13 +46,13 @@ def read_stock_data(stock_name, stock_file_name):
     for record in file_contents:
         year = record["Date"][0:4]
         month = record["Date"][5:2]
-        volume = record["Volume"]
         close = record["Close"]
+        volume = record["Volume"]
+
+
+        t = ([year, month, close, volume])
 
     return
-
-
-
 
 
 def six_best_months():
