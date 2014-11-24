@@ -42,7 +42,7 @@ def read_stock_data(stock_name, stock_file_name):
             if entry["Date"].month != month or entry["Date"].year != year:
                 # Check if year flag is assigned with a valid value
                 if year is not None:
-                    date = str(year) + "-" + str(month)
+                    date = str(year) + "/" + str(month)
                     monthly_averages += [{"Date": date, "monthly_average": round(close_volume/volume, 2)}]
 
                 year = entry["Date"].year
