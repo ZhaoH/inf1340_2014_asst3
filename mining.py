@@ -47,24 +47,15 @@ def read_stock_data(stock_name, stock_file_name):
         json.loads(file_contents)
 
 
-
-
-
+    for record in file_contents:
+        year = record["Date"][0:4]
+        month = record["Date"][5:2]
+        volume = record["Volume"]
+        close = record["Close"]
 
     return
 
 
-
-def average_per_month(date_string):
-    """
-    Identifies the month and year from format YYYY-MM-DD
-    :param date_string: date to be checked
-    :return: tuple with monthly average, month, and year
-    """
-
-#    try:
-#        datetime.datetime.strptime(date_string, '%Y-%m-%d')
-#        return True
 
 
 
