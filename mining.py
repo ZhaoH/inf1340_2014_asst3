@@ -38,19 +38,21 @@ def read_stock_data(stock_name, stock_file_name):
     for entry in stock_data:
         try:
             entry["Date"] = datetime.datetime.strptime(entry["Date"], '%Y-%m-%d')
-            #   print(entry["Date"].month)
-            if year is None:
+
+            if entry["Date"].month != month or entry["Date"].year != year:
+                if year is not None:
+                    date = str(year) + "-" + str(month)
+                    monthly_averages += [{"Date": date, "monthly_average": round(close_volume/volume, 2)}]
+
                 year = entry["Date"].year
-                month = entry["Date"].month
-            elif entry["Date"].month == month:
-                volume += entry["Volume"]
-                close_volume += entry["Close"] * entry["Volume"]
-            elif entry["Date"].month != month:
-                monthly_averages += [{"Date": month, "monthly_average": round(close_volume/volume,2)}]
-                #print(monthly_averages)
                 month = entry["Date"].month
                 volume = entry["Volume"]
                 close_volume = entry["Close"] * entry["Volume"]
+
+            elif entry["Date"].month == month and entry["Date"].year == year:
+                volume += entry["Volume"]
+                close_volume += entry["Close"] * entry["Volume"]
+
         except ValueError:
             return False
     print(monthly_averages)
