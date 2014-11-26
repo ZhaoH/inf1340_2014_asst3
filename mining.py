@@ -76,13 +76,23 @@ def read_stock_data(stock_name, stock_file_name):
 #        return True
 
 
-def six_best_months():
-    return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
+#def six_best_months():
+    #return
+       # worst_months = sorted(monthly_averages)
+       # six_worst_months = worst_months[:-5]
+    #return sorted(range(len(monthly_averages)), key=lambda i: monthly_averages[i])[-5:]
+    #return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
 
 
 def six_worst_months():
-    return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
+    #return
+        #worst_months = sorted(monthly_averages)
+        #six_worst_months = worst_months[:-5]
+    #return sorted(range(len(monthly_averages)), key=lambda i: monthly_averages[i])[5:]
+    #return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
 
+    for monthly_average in sorted(monthly_averages, key=lambda monthly_average: len(monthly_average), reverse=True):
+        print((monthly_average) [5:])
 
 def read_json_from_file(file_name):
     with open(file_name) as file_handle:
