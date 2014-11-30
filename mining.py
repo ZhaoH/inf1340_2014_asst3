@@ -43,7 +43,7 @@ def read_stock_data(stock_name, stock_file_name):
                 # Check if year flag is assigned with a valid value
                 if year is not None:
                     date = str(year) + "/" + str(month)
-                    monthly_averages += [{"Date": date, "monthly_average": round(close_volume/volume, 2)}]
+                    monthly_averages += [(date, round(close_volume/volume, 2))]
 
                 year = entry["Date"].year
                 month = entry["Date"].month
@@ -60,44 +60,19 @@ def read_stock_data(stock_name, stock_file_name):
     print(monthly_averages)  # Show test result, delete after the project is done
     return
 
-#REQUIRED_FIELDS = ["date", "close", "volume"]
-#average price = (V1  C1 + V2  C2)=(V1 + V2)
-#monthly_averages_list: tuple of averages for each month
 
-#from last assignment:
-#def valid_date_format(date_string):
-#    """
-#    Checks whether a date has the format YYYY-mm-dd in numbers
-#    :param date_string: date to be checked
-#   :return: Boolean True if the format is valid, False otherwise
-#    """
-#    try:
-#        datetime.datetime.strptime(date_string, '%Y-%m-%d')
-#        return True
-
-
-#def six_best_months():
-    #return
-       # worst_months = sorted(monthly_averages)
-       # six_worst_months = worst_months[:-5]
-    #return sorted(range(len(monthly_averages)), key=lambda i: monthly_averages[i])[-5:]
-    #return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
+def six_best_months():
+    best_months = sorted(monthly_averages, key=lambda bst: bst[1], reverse=True)
+    return best_months[0:6]
 
 
 def six_worst_months():
-    #return
-        #worst_months = sorted(monthly_averages)
-        #six_worst_months = worst_months[:-5]
-    #return sorted(range(len(monthly_averages)), key=lambda i: monthly_averages[i])[5:]
-    #return [('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0), ('', 0.0)]
+    worst_months = sorted(monthly_averages, key=lambda lst: lst[1])
+    return worst_months[0:6]
 
-    for monthly_average in sorted(monthly_averages, key=lambda monthly_average: len(monthly_average), reverse=True):
-        print((monthly_average) [5:])
 
 def read_json_from_file(file_name):
     with open(file_name) as file_handle:
         file_contents = file_handle.read()
 
     return json.loads(file_contents)
-
-read_stock_data("GOOG", "data/GOOG.json")
