@@ -13,6 +13,7 @@ __status__ = "Prototype"
 # imports one per line
 import json
 import datetime
+import math
 
 
 stock_data = []
@@ -92,13 +93,63 @@ def six_worst_months():
 
 def read_json_from_file(file_name):
     """
-    Read Jason file
+    Read JSON file
 
-    :param file_name: Jason file
-    :return: A list contains all the information in the Jason file
+    :param file_name: The name of a JSON formatted file that contains stock data
+    :return: A list contains all the information in the JSON file
     """
 
     with open(file_name) as file_handle:
         file_contents = file_handle.read()
 
     return json.loads(file_contents)
+
+
+def compare_two_stocks(stock_name1, stock_file_name1, stock_name2, stock_file_name2):
+    """
+    Compare two stocks to identify which has the highest standard deviation
+
+    :param stock_file_name1: The name of a JSON formatted file that contains stock data
+    :param stock_file_name2: The name of a JSON formatted file that contains stock data
+    :return: The name of stock which has the highest standard deviation
+    """
+
+    std_deviation1 = calculate_std_deviation(stock_name1, stock_file_name1)
+    std_deviation2 = calculate_std_deviation(stock_name2, stock_file_name2)
+
+    if std_deviation1 > std_deviation2:
+        return stock_name1
+    elif std_deviation1 < std_deviation2:
+        return stock_name2
+    else:
+        return "These two stocks has same standard deviation."
+
+
+def calculate_std_deviation(stock_name, stock_file_name):
+    """
+    Calculate standard deviation of monthly averages
+    :param stock_name: The name of stock
+    :param stock_file_name: The name of a JSON formatted file that contains stock data
+    :return: float. standard deviation of the stock
+    """
+
+    total = 0
+    count = 0
+    total_difference = 0
+
+    read_stock_data(stock_name, stock_file_name)
+
+    # Calculate the average of monthly averages
+    for item in monthly_averages:
+        total += item[1]
+        count += 1
+    avg = total / count
+
+    # Calculate the difference of each month average price from the mean, and sum the square result of each
+    for item in monthly_averages:
+        total_difference += math.pow(item[1] - avg, 2)
+
+    return math.sqrt(total_difference/count)
+
+
+compare_two_stocks("GOOG", "data/GOOG.json", "TSE-SO", "data/TSE-SO.json")

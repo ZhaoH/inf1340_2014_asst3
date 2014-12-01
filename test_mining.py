@@ -30,5 +30,10 @@ def test_tseso():
                                   ('2009/4', 2.75), ('2009/1', 3.14)]
 
 
+def test_comparison():
+    assert compare_two_stocks("GOOG", "data/GOOG.json", "TSE-SO", "data/TSE-SO.json") == "GOOG"
+
+
 test_goog()
 test_tseso()
+test_comparison()
