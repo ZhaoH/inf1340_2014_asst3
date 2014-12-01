@@ -14,7 +14,6 @@ __status__ = "Prototype"
 import json
 import datetime
 
-#import json
 
 stock_data = []
 monthly_averages = []
@@ -23,10 +22,12 @@ monthly_averages = []
 def read_stock_data(stock_name, stock_file_name):
     """
     Read stock data and calculate stock monthly average price
+
     :param stock_name: The name of stock
     :param stock_file_name: The name of a JSON formatted file that contains stock data
     :return: Tuple. Consist of the average for that month, and the date (month and year)
     """
+
     global monthly_averages, stock_data
     year = None
     month = None
@@ -34,6 +35,7 @@ def read_stock_data(stock_name, stock_file_name):
     close_volume = 0
 
     stock_data = read_json_from_file(stock_file_name)
+    print(stock_data)
     for entry in stock_data:
         try:
             entry["Date"] = datetime.datetime.strptime(entry["Date"], '%Y-%m-%d')
@@ -57,21 +59,38 @@ def read_stock_data(stock_name, stock_file_name):
         except ValueError:
             return False
 
-    print(monthly_averages)  # Show test result, delete after the project is done
     return
 
 
 def six_best_months():
+    """
+    Sort monthly stock price list and return the six months with highest stock price
+
+    :return: A list that contains worst six months stock monthly price
+    """
+
     best_months = sorted(monthly_averages, key=lambda bst: bst[1], reverse=True)
     return best_months[0:6]
 
 
 def six_worst_months():
+    """
+    Sort monthly stock price list and return the six months with lowest stock price
+
+    :return: A list that contains worst six months stock monthly price
+    """
+
     worst_months = sorted(monthly_averages, key=lambda lst: lst[1])
     return worst_months[0:6]
 
 
 def read_json_from_file(file_name):
+    """
+    Read Jason file
+
+    :param file_name: Jason file
+    :return: A list contains all the information in the Jason file
+    """
     with open(file_name) as file_handle:
         file_contents = file_handle.read()
 

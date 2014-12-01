@@ -26,3 +26,4 @@ def test_tseso():
     assert monthly_averages() == [('2004/11', 7.58)]
 
 
+test_goog()
