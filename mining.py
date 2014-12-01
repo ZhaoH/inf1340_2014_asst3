@@ -29,6 +29,7 @@ def read_stock_data(stock_name, stock_file_name):
     """
 
     global monthly_averages, stock_data
+    monthly_averages = []
     year = None
     month = None
     volume = 0
@@ -42,7 +43,7 @@ def read_stock_data(stock_name, stock_file_name):
 
             # Check if the entry is not in the same month as last entry
             if entry["Date"].month != month or entry["Date"].year != year:
-                # Check if year flag is assigned with a valid value
+                # If this is not the first entry
                 if year is not None:
                     date = str(year) + "/" + str(month)
                     monthly_averages += [(date, round(close_volume/volume, 2))]
@@ -52,6 +53,7 @@ def read_stock_data(stock_name, stock_file_name):
                 volume = entry["Volume"]
                 close_volume = entry["Close"] * entry["Volume"]
 
+            # If this entry is in the same month as last entry
             else:
                 volume += entry["Volume"]
                 close_volume += entry["Close"] * entry["Volume"]
@@ -69,7 +71,9 @@ def six_best_months():
     :return: A list that contains worst six months stock monthly price
     """
 
+    # Sort list from highest price to lowest price
     best_months = sorted(monthly_averages, key=lambda bst: bst[1], reverse=True)
+
     return best_months[0:6]
 
 
@@ -80,7 +84,9 @@ def six_worst_months():
     :return: A list that contains worst six months stock monthly price
     """
 
+    # Sort list from lowest price to highest price
     worst_months = sorted(monthly_averages, key=lambda lst: lst[1])
+
     return worst_months[0:6]
 
 
@@ -91,6 +97,7 @@ def read_json_from_file(file_name):
     :param file_name: Jason file
     :return: A list contains all the information in the Jason file
     """
+
     with open(file_name) as file_handle:
         file_contents = file_handle.read()
 
