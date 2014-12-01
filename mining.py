@@ -35,7 +35,7 @@ def read_stock_data(stock_name, stock_file_name):
     close_volume = 0
 
     stock_data = read_json_from_file(stock_file_name)
-    print(stock_data)
+
     for entry in stock_data:
         try:
             entry["Date"] = datetime.datetime.strptime(entry["Date"], '%Y-%m-%d')
