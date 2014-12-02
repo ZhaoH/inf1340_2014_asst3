@@ -64,6 +64,10 @@ def read_stock_data(stock_name, stock_file_name):
         except ValueError:
             return False
 
+    if len(str(month)) == 1:
+        month = "0" + str(month)
+    date = str(year) + "/" + str(month)
+    monthly_averages += [(date, round(close_volume/volume, 2))]
     return
 
 
