@@ -46,6 +46,8 @@ def read_stock_data(stock_name, stock_file_name):
             if entry["Date"].month != month or entry["Date"].year != year:
                 # If this is not the first entry
                 if year is not None:
+                    if len(str(month)) == 1:
+                        month = "0" + str(month)
                     date = str(year) + "/" + str(month)
                     monthly_averages += [(date, round(close_volume/volume, 2))]
 
@@ -150,6 +152,3 @@ def calculate_std_deviation(stock_name, stock_file_name):
         total_difference += math.pow(item[1] - avg, 2)
 
     return math.sqrt(total_difference/count)
-
-
-compare_two_stocks("GOOG", "data/GOOG.json", "TSE-SO", "data/TSE-SO.json")
