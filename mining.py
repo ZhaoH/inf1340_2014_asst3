@@ -80,8 +80,10 @@ def six_best_months():
 
     # Sort list from highest price to lowest price
     best_months = sorted(monthly_averages, key=lambda bst: bst[1], reverse=True)
-
-    return best_months[0:6]
+    if len(best_months) < 6:
+        return "There is not enough data"
+    else:
+        return best_months[0:6]
 
 
 def six_worst_months():
@@ -93,8 +95,10 @@ def six_worst_months():
 
     # Sort list from lowest price to highest price
     worst_months = sorted(monthly_averages, key=lambda lst: lst[1])
-
-    return worst_months[0:6]
+    if len(worst_months) < 6:
+        return "There is not enough data"
+    else:
+        return worst_months[0:6]
 
 
 def read_json_from_file(file_name):
@@ -128,7 +132,7 @@ def compare_two_stocks(stock_name1, stock_file_name1, stock_name2, stock_file_na
     elif std_deviation1 < std_deviation2:
         return stock_name2
     else:
-        return "These two stocks has same standard deviation."
+        return "Tie"
 
 
 def calculate_std_deviation(stock_name, stock_file_name):
